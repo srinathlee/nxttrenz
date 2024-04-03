@@ -8,9 +8,6 @@
   max-width: 1110px;
   margin: auto;
 }
-.register_in_login{
- text-decoration: none;
-}
 
 @media screen and (min-width: 992px) {
   .login-form-container {
@@ -18,7 +15,6 @@
     justify-content: space-around;
   }
 }
-
 
 .login-website-logo-mobile-image {
   width: 165px;

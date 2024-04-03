@@ -1,14 +1,15 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
-import {Redirect} from 'react-router-dom'
+import {Redirect, Link} from 'react-router-dom'
+import toast, {Toaster} from 'react-hot-toast'
 
 import './index.css'
-import {Link} from 'react-router-dom/cjs/react-router-dom.min'
 
-class LoginForm extends Component {
+class Register extends Component {
   state = {
-    username: '',
+    name: '',
     password: '',
+    username: '',
     showSubmitError: false,
     errorMsg: '',
   }
@@ -21,8 +22,11 @@ class LoginForm extends Component {
     this.setState({password: event.target.value})
   }
 
+  onChangeName = event => {
+    this.setState({name: event.target.value})
+  }
+
   onSubmitSuccess = jwtToken => {
-    console.log(jwtToken)
     const {history} = this.props
 
     Cookies.set('jwt_token', jwtToken, {
@@ -38,25 +42,32 @@ class LoginForm extends Component {
 
   submitForm = async event => {
     event.preventDefault()
-    const {username, password} = this.state
-    const userDetails = {username, password}
-    const url = 'http://localhost:3000/api/login'
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userDetails),
-    }
-    console.log(`"helo`)
-    const response = await fetch(url, options)
-    console.log(response)
-    const data = await response.json()
-    console.log(data)
-    if (response.ok === true) {
-      this.onSubmitSuccess(data.jwt_token)
+    const {name, username, password} = this.state
+    if (name === '' || username === '' || password === '') {
+      toast.error('enter all details')
     } else {
-      this.onSubmitFailure(data.message)
+      if (password.length < 8) {
+        toast.error('password should atleast 8 characters')
+      }
+      const userDetails = {username, password, name}
+      const url = 'http://localhost:3000/api/register'
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userDetails),
+      }
+
+      const response = await fetch(url, options)
+      console.log(response)
+      const data = await response.json()
+      if (response.ok === true) {
+        toast.success('registration successful')
+        this.onSubmitSuccess(data.jwt_token)
+      } else {
+        this.onSubmitFailure(data.error_msg)
+      }
     }
   }
 
@@ -98,6 +109,25 @@ class LoginForm extends Component {
     )
   }
 
+  renderNameField = () => {
+    const {name} = this.state
+    return (
+      <>
+        <label className="input-label" htmlFor="username">
+          USERNAME
+        </label>
+        <input
+          type="text"
+          id="name  "
+          className="username-input-field"
+          value={name}
+          onChange={this.onChangeName}
+          placeholder="Username"
+        />
+      </>
+    )
+  }
+
   render() {
     const {showSubmitError, errorMsg} = this.state
     const jwtToken = Cookies.get('jwt_token')
@@ -122,22 +152,24 @@ class LoginForm extends Component {
             className="login-website-logo-desktop-image"
             alt="website logo"
           />
+          <div className="input-container">{this.renderNameField()}</div>
           <div className="input-container">{this.renderUsernameField()}</div>
           <div className="input-container">{this.renderPasswordField()}</div>
           <button type="submit" className="login-button">
-            Login
+            Register
           </button>
           <p>
             dont have account?{' '}
-            <Link to="/register" className="register_in_login">
-              register
+            <Link to="/login" className="register_in_login">
+              Login
             </Link>{' '}
           </p>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>
+        <Toaster />
       </div>
     )
   }
 }
 
-export default LoginForm
+export default Register
