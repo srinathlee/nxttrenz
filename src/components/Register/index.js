@@ -1,7 +1,7 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect, Link} from 'react-router-dom'
-import toast, {Toaster} from 'react-hot-toast'
+// import toast, {Toaster} from 'react-hot-toast'
 
 import './index.css'
 
@@ -44,10 +44,10 @@ class Register extends Component {
     event.preventDefault()
     const {name, username, password} = this.state
     if (name === '' || username === '' || password === '') {
-      toast.error('enter all details')
+      alert('enter all details')
     } else {
       if (password.length < 8) {
-        toast.error('password should atleast 8 characters')
+        alert('password should atleast 8 characters')
       }
       const userDetails = {username, password, name}
       const url = 'https://nxttrenz-server.onrender.com/api/register'
@@ -63,7 +63,7 @@ class Register extends Component {
       console.log(response)
       const data = await response.json()
       if (response.ok === true) {
-        toast.success('registration successful')
+        alert('registration successful')
         this.onSubmitSuccess(data.jwt_token)
       } else {
         this.onSubmitFailure(data.error_msg)
@@ -166,7 +166,6 @@ class Register extends Component {
           </p>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>
-        <Toaster />
       </div>
     )
   }
