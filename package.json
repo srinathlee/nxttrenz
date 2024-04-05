@@ -5,7 +5,7 @@
   "engines": {
     "node": "^10.13 || 12 || 14 || 18.20.1",
     "npm": ">=6",
-    "pnpm": "^8.14.1"
+    "pnpm": "8.15.6"
   },
   "dependencies": {
     "@testing-library/jest-dom": "5.11.9",
