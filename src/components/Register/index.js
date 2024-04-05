@@ -50,7 +50,7 @@ class Register extends Component {
         toast.error('password should atleast 8 characters')
       }
       const userDetails = {username, password, name}
-      const url = 'http://localhost:3000/api/register'
+      const url = 'https://nxttrenz-server.onrender.com/api/register'
       const options = {
         method: 'POST',
         headers: {

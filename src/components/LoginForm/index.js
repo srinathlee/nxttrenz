@@ -40,7 +40,7 @@ class LoginForm extends Component {
     event.preventDefault()
     const {username, password} = this.state
     const userDetails = {username, password}
-    const url = 'http://localhost:3000/api/login'
+    const url = 'https://nxttrenz-server.onrender.com/api/login'
     const options = {
       method: 'POST',
       headers: {
